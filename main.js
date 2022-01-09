@@ -22,7 +22,7 @@ function start() {
 
     document.getElementById("status").innerHTML = "Status : Detecting Objects";
 
-    object_name = document.getElementById("input").value;
+
 
 
 }
@@ -39,9 +39,10 @@ function draw() {
     image(video, 0, 0, 350, 350);
 
 
+
     if (status != "") {
 
-        objectDetector.detect(video, gotResult);
+        objectDetector.detect(video, gotResults);
 
         for (i = 0; i < objects.length; i++) {
 
@@ -57,13 +58,30 @@ function draw() {
 
 
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+            console.log(objects[i].label);
+            console.log(document.getElementById("input").value);
 
-            if (objects[i].label == object_name) {
+            if (objects[i].label == document.getElementById("input").value) {
 
                 video.stop();
-                objectDetector.detect(gotResult);
+
                 document.getElementById("object_detected").innerHTML = object_name + "  found";
+
+               
             }
+            else{
+                document.getElementById("object_detected").innerHTML = object_name + "  not found";
+
+            }
+            
         }
     }
+}
+
+function gotResults(error, results) {
+    if (error) {
+        console.log(error);
+    }
+    console.log(results);
+    objects = results;
 }
